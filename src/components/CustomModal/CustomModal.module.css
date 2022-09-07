@@ -1,0 +1,38 @@
+
+.buttonBaseStyles1 {
+    margin-top: 10px;
+	margin-left: 10px;
+	width: 98%;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	background: #ddd;
+	border-radius: 10px;
+	transition: all 0.3s;
+    padding: 10px 20px;
+    background: var(--color-brand-default);
+	color: var(--color-white);
+}
+
+.buttonBaseStyles2 {
+    margin-top: 10px;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	background: #ddd;
+	border-radius: 10px;
+	transition: all 0.3s;
+    padding: 10px 20px;
+    background: var(--color-brand-default);
+	color: var(--color-white);
+}
+
+.buttonBaseStyles2:hover , .buttonBaseStyles1:hover{
+	filter: brightness(0.8);
+}
+
+.buttonBaseStyles2 > *:not(:first-child) {
+	margin-left: 10px;
+}
