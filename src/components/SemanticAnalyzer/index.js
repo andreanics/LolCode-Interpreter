@@ -27,7 +27,7 @@ class SemanticAnalyzer extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            lexemes: this.props.data,
+            lexemes: [...this.props.data],
             symbol_table: [["IT",init_value]],
             text: [] 
             
@@ -44,7 +44,7 @@ class SemanticAnalyzer extends React.Component{
 
     /* Removes comment, code delimiter, and string delimiter */
     cleanArr(){
-        const arr = [...this.state.lexemes];
+        var arr = this.state.lexemes;
         var c;
         for (let i = 0; i< arr.length; i++) {
             c = arr[i][1]
@@ -53,7 +53,6 @@ class SemanticAnalyzer extends React.Component{
                 i--;
             }
         }
-        
         this.findVariables(arr)
     }
     findVariables(arr){
@@ -114,10 +113,11 @@ class SemanticAnalyzer extends React.Component{
     }
     
     solveExpression(arr,startIndex,endIndex){
-        var str = String(arr[startIndex][0])
+        var str = String(arr[startIndex][0]).slice()
         for (let i= (startIndex+1); i < (endIndex+1); i++) {
             str = str.concat(" ",arr[i][0])
         }
+
         // Convert to prefix notation
         str = str.replace(/SUM OF/g,"+")
         str = str.replace(/DIFF OF/g,"-")
@@ -136,27 +136,27 @@ class SemanticAnalyzer extends React.Component{
         str = str.replace(/\s+/g,",")
 
         // Format String
-        arr = str.split(',')
-        if(arr[0] === "max"){
-            arr = [ "Math.max("+ arr[1] + "," + arr[2] + ")" ]
+        let spl = str.split(',')
+        if(spl[0] === "max"){
+            spl = [ "Math.max( "+ spl[1] + ", " + spl[2] + " )" ]
         }
-        else if(arr[0] === "min"){
-            arr = [ "Math.min("+ arr[1] + "," + arr[2] + ")" ]
+        else if(spl[0] === "min"){
+            spl = [ "Math.min( "+ spl[1] + ", " + spl[2] + " )" ]
         }
         else{
-            arr = [ arr[1], arr[0], arr[2] ]
+            spl = [ " " + spl[1], spl[0], spl[2] ]
         }
         
-        str = arr.join(' ')
-        
-        // FOR FIXING !!
-        for (let i = 0; i < symbols.length; i++) {
-            str = str.replace(this.state.symbol_table[i][0], this.state.symbol_table[i][1])
+        // Convert variables to values
+        let str1 = spl.join(' ')
+        for (let i = 0; i < this.state.symbol_table.length; i++) {
+            str1 = str1.replace(' ' + this.state.symbol_table[i][0], ' ' + this.state.symbol_table[i][1])
+            console.log(str1)
         }
         
         // Evaluate answer
         try {
-            let ans = eval(str)
+            let ans = eval(str1)
             if(ans !== true && ans !== false){
                 ans = Math.round(ans*100) / 100
             }

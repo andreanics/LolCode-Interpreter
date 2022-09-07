@@ -25,7 +25,11 @@ class SyntaxAnalyzer extends React.Component{
                 classifications:this.getClassifications(this.state.lexemes)
             })
         const semanticanalyzer = document.getElementById('semanticanalyzer');
-        ReactDOM.render(<SemanticAnalyzer data={this.state.lexemes} func={{getSymbols: this.getSymbols.bind(this)}} func1 = {{getText: this.getText.bind(this)}}/>, semanticanalyzer);
+        var lex = []
+        for (let index = 0; index < this.state.lexemes.length; index++) {
+            lex.push(this.state.lexemes[index].slice())  
+        }
+        ReactDOM.render(<SemanticAnalyzer data={lex} func={{getSymbols: this.getSymbols.bind(this)}} func1 = {{getText: this.getText.bind(this)}}/>, semanticanalyzer);
     }
 
     getSymbols(symbols){

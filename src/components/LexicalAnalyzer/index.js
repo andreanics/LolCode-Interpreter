@@ -20,6 +20,7 @@ class LexicalAnalyzer extends React.Component{
         //everytiime we click the execute button
         this.classify(this.props.str);
         const syntaxanalyzer = document.getElementById('syntaxanalyzer');
+        console.log(this.state.lexemes)
         ReactDOM.render(<SyntaxAnalyzer lexemes={this.state.lexemes} />, syntaxanalyzer);
     }
 
@@ -75,7 +76,6 @@ class LexicalAnalyzer extends React.Component{
             }
             else if(string.match(rgx.TLDR)){ 
                 string = this.addToken(string,rgx.TLDR,cls.end_comment)
-                console.log(string)
             }
             else if(string.match(rgx.I_HAS_A)){   
                 string = this.addToken(string,rgx.I_HAS_A,cls.variable_decl)           
