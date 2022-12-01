@@ -24,8 +24,9 @@ export const output = new RegExp([cls.output_key,temp].join("_"),"g")
 
 /* Comments */
 export const comment1 = [cls.comment_unary,cls.comment_content].join("_").concat("_?")
-export const comment2 =  [linebreak,cls.start_comment,cls.comment_content,cls.end_comment].join("_").concat("_?")
-export const comment = new RegExp([comment1,comment2].join("|"),"g")
+export const comment2 = [cls.comment_unary,cls.comment_content].join("_").concat("_?")
+export const comment3 =  [cls.start_comment,cls.comment_content,cls.end_comment].join("_").concat("_?")
+export const comment = new RegExp([comment1,comment2,comment3].join("|"),"g")
 
 /* Typecasting */
 export const typecast1 = [cls.prefix_typecast,variable,cls.type_assign,cls.type].join("_")

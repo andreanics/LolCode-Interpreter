@@ -1,0 +1,12 @@
+HAI
+I HAS A a
+I HAS A b ITZ 9
+I HAS A var ITZ SUM OF 5 AN 6
+
+a R 7
+
+VISIBLE a
+VISIBLE b
+VISIBLE var
+
+KTHXBYE

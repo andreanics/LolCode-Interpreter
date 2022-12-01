@@ -55,7 +55,7 @@ class CustomTable extends React.Component {
 											{/* <Td>{item.key}</Td>
 											<Td>{item.value}</Td> */}
 											<Td>{item[0]}</Td>
-											<Td>{item[1].match("Variable Identifier") ? item[1].slice(0,-1): item[1]}</Td>
+											<Td>{item[1].match("Variable Identifier") ? item[1].slice(0,19): item[1]}</Td>
 										</Tr>
 									)	
 								}

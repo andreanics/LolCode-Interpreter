@@ -18,18 +18,21 @@ export default class App extends React.Component{
         identifiers: [],
         symbols: [],
         text: "",
-        error: ""
+        error: "",
+        input: ""
     }
     this.getLexicalOutput.bind(this);
     this.getSemanticOutput.bind(this);
     this.getSyntaxError.bind(this);
     this.getText.bind(this);
+    this.getInput.bind(this);
+    this.setInput.bind(this);
   }
 
   componentDidUpdate(pP, pS){
     if(pS.lexemes !== this.state.lexemes){
       const syntaxanalyzer = document.getElementById('syntaxanalyzer'); 
-      ReactDOM.render(<SyntaxAnalyzer lexemes={this.state.lexemes} identifiers ={this.state.identifiers} data={{getSyntaxError: this.getSyntaxError.bind(this)}} func={{getSemanticOutput: this.getSemanticOutput.bind(this)}} func1 = {{getText: this.getText.bind(this)}}/>, syntaxanalyzer);
+      ReactDOM.render(<SyntaxAnalyzer lexemes={this.state.lexemes} identifiers ={this.state.identifiers} data={{getSyntaxError: this.getSyntaxError.bind(this)}} func={{getSemanticOutput: this.getSemanticOutput.bind(this)}} func1 = {{getText: this.getText.bind(this)}} func2 = {{getInput: this.getInput.bind(this)}}/>, syntaxanalyzer);
     }
   }
   
@@ -51,6 +54,23 @@ export default class App extends React.Component{
     this.setState({text: text});
   }
 
+  resetConsole(){
+    this.setState({text: ""});
+  }
+
+  setInput(input){
+    this.setState({input:input});
+  }
+
+  async getInput(){
+    while(this.state.input == ""){
+      await new Promise(r => setTimeout(r, 100));
+    }
+    let input1 = this.state.input;
+    this.setState({ input: "" })
+    return input1; 
+  }
+
   render(){
     return (
       <div className="App">
@@ -62,7 +82,7 @@ export default class App extends React.Component{
         <div className={styles.container}>
   
           <div className={styles.textEditor}>
-            <TextEditor data={{getLexicalOutput: this.getLexicalOutput.bind(this)}} />
+            <TextEditor data={{getLexicalOutput: this.getLexicalOutput.bind(this)}} func={{resetConsole: this.resetConsole.bind(this)}} />
           </div>
   
           <div className={styles.right}>
@@ -77,7 +97,7 @@ export default class App extends React.Component{
   
             <div id="console" className={styles.console}>
               {this.state.error === "" ? 
-                <Console data={this.state.text}/>
+                <Console data={this.state.text} func = {{setInput: this.setInput.bind(this)}}/>
                 : <Console data={this.state.error}/>
               }
             </div>

@@ -31,7 +31,8 @@ class TextEditor extends React.Component {
         if(prevState.fileContent !== this.state.fileContent){
             const lexicalanalyzer = document.getElementById('lexicalanalyzer');
             ReactDOM.render(<LexicalAnalyzer str={this.state.fileContent} data={{getLexicalOutput: this.getLexicalOutput.bind(this)}}/>, lexicalanalyzer);
-
+            document.getElementById("textarea").value = ""
+            this.props.func.resetConsole()
         }
         
         if(prevState.lexicalOutput !== this.state.lexicalOutput){
@@ -79,6 +80,7 @@ class TextEditor extends React.Component {
 
         //setting the state of the filecontent that will trigger componentDidUpdate that will render <lexicalAnalyzer str={this.state.fileContent}>
         let text = document.getElementById("editor").value;
+        
         this.setState({ fileContent: text });
     }
 

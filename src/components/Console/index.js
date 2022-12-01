@@ -8,25 +8,33 @@ class Console extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            
         }
-
       }
-
-
 
     componentDidMount(){
         document.getElementById('textarea').value = this.props.data
     }  
 
     componentDidUpdate(prevProps){
+        
         if(prevProps.data !== this.props.data){
-            document.getElementById('textarea').value = this.props.data
+            document.getElementById('textarea').value = document.getElementById('textarea').value + this.props.data
         }
     }
 
-
+    consoleInput(e){
+        let str = e.target.value
+        let end = str.length-1
+        let endchar = str[end]
+        if(endchar === "\n"){
+            let i = end-1
+            while(str[i] !== "\n") i--
+            this.props.func.setInput(str.substring(i+1,end))
+        } 
+    }
+    
     render() {
+    
         return (
             <div className={styles.baseStyles}>
                 <h3>CONSOLE</h3>
@@ -36,7 +44,8 @@ class Console extends React.Component {
                     size="sm"
                     minHeight={182}
                     variant='filled' 
-                    focusBorderColor = "teal"   
+                    focusBorderColor = "teal" 
+                    onChange={(e) => this.consoleInput(e)}  
                 />
             </div>
         )

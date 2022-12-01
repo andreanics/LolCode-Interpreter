@@ -10,7 +10,7 @@ class LexicalAnalyzer extends React.Component{
         this.state = {
             lexemes: [],
             identifiers: [],
-            var_counter: 0
+            //var_counter: 0
         }
         this.classify = this.classify.bind(this);
         this.addToken = this.addToken.bind(this);
@@ -20,7 +20,6 @@ class LexicalAnalyzer extends React.Component{
         //everytiime we click the execute button
         this.classify(this.props.str);
         const syntaxanalyzer = document.getElementById('syntaxanalyzer');
-        console.log(this.state.lexemes)
         ReactDOM.render(<SyntaxAnalyzer lexemes={this.state.lexemes} />, syntaxanalyzer);
     }
 
@@ -33,11 +32,11 @@ class LexicalAnalyzer extends React.Component{
             if(s[1]!=="\n") {
                 if (classification === "Variable Identifier" && !this.state.identifiers.includes(str)){
                     this.state.identifiers.push(str)
-                    this.state.lexemes.push([str,classification+String(this.state.var_counter)]);
-                    this.setState({var_counter: this.state.var_counter+1})
+                    this.state.lexemes.push([str,classification+"-"+str]);
+                    //this.setState({var_counter: this.state.var_counter+1})
                 }
                 else if (this.state.identifiers.includes(str)){
-                    this.state.lexemes.push([str,classification+String(this.state.identifiers.indexOf(str))]);
+                    this.state.lexemes.push([str,classification+"-"+str]);
                 }
                 else this.state.lexemes.push([str,classification]);
                 

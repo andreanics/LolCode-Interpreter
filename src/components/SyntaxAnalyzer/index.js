@@ -29,7 +29,7 @@ class SyntaxAnalyzer extends React.Component{
         for (let index = 0; index < this.state.lexemes.length; index++) {
             lex.push(this.state.lexemes[index].slice())  
         }
-        ReactDOM.render(<SemanticAnalyzer data={lex} func={{getSymbols: this.getSymbols.bind(this)}} func1 = {{getText: this.getText.bind(this)}}/>, semanticanalyzer);
+        ReactDOM.render(<SemanticAnalyzer data={lex} func={{getSymbols: this.getSymbols.bind(this)}} func1 = {{getText: this.getText.bind(this)}} func2 = {{getInput: this.getInput.bind(this)}}/>, semanticanalyzer);
     }
 
     getSymbols(symbols){
@@ -38,6 +38,10 @@ class SyntaxAnalyzer extends React.Component{
 
     getText(text){
         this.props.func1.getText(text);
+    }
+
+    async getInput(){
+        return this.props.func2.getInput();
     }
 
     /* All the classifications of the lexemes will be put into a list   
@@ -54,13 +58,15 @@ class SyntaxAnalyzer extends React.Component{
         this.convertString(classifications);
         return classifications
     }
-
+   
     convertString(str){
+        
         str = str.replace(ptn.comment,"")
         str = str.replace(/Start Code Delimiter_Float Literal/g,"Start Code Delimiter")
         str = str.replace(/New line_Start Code Delimiter/g,"Start Code Delimiter")
         str = str.replace(ptn.switch_value,"caseLiteral")
         str = str.replace(ptn.vars,"variable")
+        str = str.replace(/-.*_/,"_")
         str = str.replace(ptn.literal,"expression")
         str = str.replace(ptn.operations,"expression")
         str = str.replace(ptn.input,"input")
@@ -107,9 +113,12 @@ class SyntaxAnalyzer extends React.Component{
 
             /* Program */
             if(i === 0){
-                if(errorString[i] !== cls.begin_program){
-                    errorMessage ="Syntax Error: Code should begin with code delimiter HAI"
-                    break;
+                if(errorString[i] !== cls.begin_program){ 
+                    if(errorString[i] !== cls.start_comment &&
+                        errorString[i] !== cls.comment_unary){
+                        errorMessage ="Syntax Error: Code should begin with code delimiter HAI"
+                        break;
+                    }
                 }
             }
             if(i === errorString.length-1){
